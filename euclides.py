@@ -28,21 +28,21 @@ def euclid (a, b):
 
 	print 'Calculando MDC({0}, {1}):'.format(a,b)
 
-	# Calcula o MDC entre _a_ e _b_ 
-	# e armazena os passos intermediários necessário 
+	# Calcula o MDC entre _a_ e _b_
+	# e armazena os passos intermediários necessário
 	# para montar as expressões na próxima etapa
 	while b != 0:
 		if values:
 			v = { 'a':a, 'b':b, 'div':a/b, 'resto':a%b, 'alfa':1, 'beta':-values[-1]['resto'] }
 		else:
 			v = { 'a':a, 'b':b, 'div':a/b, 'resto':a%b, 'alfa':1, 'beta':-(a/b) }
-		
+
 		left, right = gen_coefficients_expression(v).split(' = ')
 
 		print indice_message.format(count) + '\t' + \
-			steps_message.format( v['a'], v['b'], v['div'], v['resto'], 
+			steps_message.format( v['a'], v['b'], v['div'], v['resto'],
 				width1=a_len, width2=b_len)
-		
+
 		a, b = b, a%b
 
 		if b != 0:
@@ -54,6 +54,7 @@ def euclid (a, b):
 	mdc = a
 
 	print
+	print
 	count = 1
 
 	# Ajeita os valores da primeira expressão calculada para
@@ -64,7 +65,7 @@ def euclid (a, b):
 
 		left, right = gen_coefficients_expression(v).split(' = ')
 		pairs[left] = right
-	
+
 	for i in range(0, len(values)):
 		v = values[i]
 
@@ -76,15 +77,15 @@ def euclid (a, b):
 			abs_beta = str(abs(v['beta']))
 			if abs_a in pairs or abs_beta in pairs:
 				expression_modified = coefficients_expression
-				
+
 				if abs_a in pairs:
 					expression_modified = gen_coefficients_expression(v, expression_modified) \
 											.replace(str(v['a'])+' * ', '('+pairs[abs_a]+') * ' )
-					
+
 				if abs_beta in pairs:
 					expression_modified = gen_coefficients_expression(v, expression_modified) \
 											.replace(' * '+str(v['beta']), ' * -('+pairs[abs_beta]+')' )
-					
+
 
 				print ' '*3 + implies_message + expression_modified
 
@@ -114,7 +115,7 @@ def euclid (a, b):
 		alfa = (0 if a == 0 else 1)
 		beta = int(not alfa)
 
-	return mdc, alfa, beta	
+	return mdc, alfa, beta
 
 def gen_coefficients_expression (v, str=coefficients_expression):
 	return str.format(
@@ -122,16 +123,16 @@ def gen_coefficients_expression (v, str=coefficients_expression):
 			)
 
 def get_input ():
-	while True: 
+	while True:
 		try:
-			n1 = int(raw_input('Digite o primeiro numero: '))
+			n1 = int(raw_input('Digite o primeiro número: '))
 			n2 = int(raw_input('Digite o segundo número: '))
-			
+
 			if n1 < 0 or n2 < 0:
 				raise ValueError('Não sei calcular o MDC de números negativos.\n'
 					'Tente usar essa relação: MDC({0}, {1}) = MDC({2}, {3}).'.format(n1, n2, abs(n1), abs(n2)))
 
-			return (n1, n2)	
+			return (n1, n2)
 		except ValueError as e:
 			print
 			print str(e)
