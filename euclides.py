@@ -27,15 +27,17 @@ def euclid (a, b):
 	b_len = len(str(b))
 
 	print 'Calculando MDC({0}, {1}):'.format(a,b)
+
+	# Calcula o MDC entre _a_ e _b_ 
+	# e armazena os passos intermediários necessário 
+	# para montar as expressões na próxima etapa
 	while b != 0:
 		if values:
 			v = { 'a':a, 'b':b, 'div':a/b, 'resto':a%b, 'alfa':1, 'beta':-values[-1]['resto'] }
 		else:
 			v = { 'a':a, 'b':b, 'div':a/b, 'resto':a%b, 'alfa':1, 'beta':-(a/b) }
 		
-		left, right = coefficients_expression.format \
-			(v['alfa'], v['beta'], v['div'], v['resto'],
-			 	v['a']).split(' = ')
+		left, right = gen_coefficients_expression(v).split(' = ')
 
 		print indice_message.format(count) + '\t' + \
 			steps_message.format( v['a'], v['b'], v['div'], v['resto'], 
@@ -48,46 +50,46 @@ def euclid (a, b):
 			pairs[left] = right
 			count += 1
 
+	# Quando _b_ se torna 0, o mdc estará em _a_
 	mdc = a
 
 	print
-	print
 	count = 1
 
+	# Ajeita os valores da primeira expressão calculada para
+	# valores que satisfazem a lógica recursiva do próximo passo
 	if values:
 		v = values[0]
 		v['div'] = v['b']
 
-		left, right = coefficients_expression.format \
-			(v['alfa'], v['beta'], v['div'], v['resto'],
-			 	v['a']).split(' = ')
+		left, right = gen_coefficients_expression(v).split(' = ')
 		pairs[left] = right
 	
 	for i in range(0, len(values)):
 		v = values[i]
 
-		print indice_message.format(count) + implies_message + \
-			coefficients_expression.format(
-				v['alfa'], v['beta'], v['div'], v['resto'], v['a']
-			)
+		print indice_message.format(count) + implies_message + gen_coefficients_expression(v)
 
 		if i != 0:
-			if str(abs(v['a'])) in pairs or str(abs(v['beta'])) in pairs:
+			# Calcula o novo formato da expressão dos coeficientes
+			abs_a = str(abs(v['a']))
+			abs_beta = str(abs(v['beta']))
+			if abs_a in pairs or abs_beta in pairs:
 				expression_modified = coefficients_expression
 				
-				if str(abs(v['a'])) in pairs:
-					expression_modified = expression_modified.format(
-							v['alfa'], v['beta'], v['div'], v['resto'], v['a']
-						).replace(str(v['a'])+' * ', '('+pairs[str(abs(v['a']))]+') * ' )
+				if abs_a in pairs:
+					expression_modified = gen_coefficients_expression(v, expression_modified) \
+											.replace(str(v['a'])+' * ', '('+pairs[abs_a]+') * ' )
 					
-				if str(abs(v['beta'])) in pairs:
-					expression_modified = expression_modified.format(
-							v['alfa'], v['beta'], v['div'], v['resto'], v['a']
-						).replace(' * '+str(v['beta']), ' * -('+pairs[str(abs(v['beta']))]+')' )
+				if abs_beta in pairs:
+					expression_modified = gen_coefficients_expression(v, expression_modified) \
+											.replace(' * '+str(v['beta']), ' * -('+pairs[abs_beta]+')' )
 					
 
 				print ' '*3 + implies_message + expression_modified
 
+			# Ajeita os valores da primeira expressão calculada para
+			# valores que satisfazem a lógica recursiva do próximo passo
 			if i == 1:
 				v['alfa'] = 0 - values[i-1]['alfa'] * values[i]['div']
 				v['beta'] = 1 - values[i-1]['beta'] * values[i]['div']
@@ -98,15 +100,10 @@ def euclid (a, b):
 			v['a'] = values[i-1]['a']
 			v['div'] = values[i-1]['b']
 
-			left, right = coefficients_expression.format \
-				(v['alfa'], v['beta'], v['div'], v['resto'],
-			 		v['a']).split(' = ')
+			left, right = gen_coefficients_expression(v).split(' = ')
 			pairs[left] = right
 
-			print ' '*3 + implies_message +  \
-				coefficients_expression.format(
-					v['alfa'], v['beta'], v['div'], v['resto'], v['a']
-				)
+			print ' '*3 + implies_message + gen_coefficients_expression(v)
 
 		count += 1
 		print
@@ -119,6 +116,11 @@ def euclid (a, b):
 
 	return mdc, alfa, beta	
 
+def gen_coefficients_expression (v, str=coefficients_expression):
+	return str.format(
+				v['alfa'], v['beta'], v['div'], v['resto'], v['a']
+			)
+
 def get_input ():
 	while True: 
 		try:
@@ -129,7 +131,7 @@ def get_input ():
 				raise ValueError('Não sei calcular o MDC de números negativos.\n'
 					'Tente usar essa relação: MDC({0}, {1}) = MDC({2}, {3}).'.format(n1, n2, abs(n1), abs(n2)))
 
-			return (n1, n2) if (n1 > n2) else (n2, n1)
+			return (n1, n2)	
 		except ValueError as e:
 			print
 			print str(e)
