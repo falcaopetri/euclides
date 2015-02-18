@@ -1,7 +1,11 @@
 # Algoritmo de Euclides estendido
 
-Este programa foi desenvolvido visando mostrar o passo-a-passo para a obtenção dos valores _x_, _y_ e _mdc(a, b)_ tal que:
-<center>`x*a + y*b = mdc(a, b)`</center>
+Este programa mostra o passo-a-passo para a obtenção dos valores _x_, _y_ e _mdc(a, b)_ tal que:
+<center>`(x * a) + (y * b) = mdc(a, b)`</center>
+
+Mais informações em:
+  - [Euclidean Algorithm](http://en.wikipedia.org/wiki/Euclidean_algorithm);
+  - [Extended Euclidean Algorithm](http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm)
 
 ## Autor
 Escrito por Antonio Carlos Falcão Petri, BCC-014, UFSCar, Campus São Carlos
@@ -15,7 +19,7 @@ Trabalho desenvolvido para a disciplina de Estruturas Discretas, ministrada pelo
 python euclides.py
 ```
 
-Para rodar os valores de teste, edite a FLAG `testing` na `main()`
+Para rodar os valores de teste, edite a _flag_ `testing` no começo do código
 
 Testado com Python 2.7.6, compatível com Python 2.x
 
