@@ -8,13 +8,16 @@
 #														#
 #########################################################
 
+# Automatic test cases flag
+testing = False
+
 answer_message = 'MDC({0}, {1}) = {3} * {0} + {4} * {1} = {2}'
 indice_message = '({0})'
 steps_message = '{0:{width1}}/{1:<{width2}} = {2} resta {3}'
 implies_message = ' => '
 coefficients_expression = '{3} = {4} * {0} + {2} * {1}'
 
-def euclid(a, b):
+def euclid (a, b):
 	values = []
 	pairs = {}
 
@@ -111,34 +114,35 @@ def euclid(a, b):
 	if values:
 		alfa, beta = values[-1]['alfa'], values[-1]['beta']
 	else:
-		alfa = 0 if a == 0 else 1
-		beta = int(not alfa) #1 if a == 0 else 0
+		alfa = (0 if a == 0 else 1)
+		beta = int(not alfa)
 
 	return mdc, alfa, beta	
 
-def get_input():
-	while True: # bad practice?
+def get_input ():
+	while True: 
 		try:
 			n1 = int(raw_input('Digite o primeiro numero: '))
 			n2 = int(raw_input('Digite o segundo número: '))
 			
 			if n1 < 0 or n2 < 0:
-				raise ValueError('Dica: MDC({0}, {1}) = MDC({2}, {3}).'.format(n1, n2, abs(n1), abs(n2)))
+				raise ValueError('Não sei calcular o MDC de números negativos.\n'
+					'Tente usar essa relação: MDC({0}, {1}) = MDC({2}, {3}).'.format(n1, n2, abs(n1), abs(n2)))
 
-			return (n1, n2) if n1 > n2 else (n2, n1)
+			return (n1, n2) if (n1 > n2) else (n2, n1)
 		except ValueError as e:
-			print 'Valores inválidos.' + ' ' + str(e)
+			print
+			print str(e)
+			print
 
-def show_answer(n1, n2):
+def show_answer (n1, n2):
 	print
 	print
 	mdc, alfa, beta = euclid(n1, n2)
 
 	print answer_message.format(n1, n2, mdc, alfa, beta)
 
-def main():
-	testing = False
-
+def main ():
 	if testing:
 		tests = [ [32, 76], [76, 92], [15, 69], [29, 83], [96, 11], [77, 55]]
 
