@@ -1,6 +1,6 @@
 # Algoritmo de Euclides estendido
 
-Este programa mostra o passo-a-passo para a obtenção dos valores _x_, _y_ e _mdc(a, b)_ tal que:
+Este programa mostra o passo-a-passo para a obtenção dos valores `x`, `y` e `mdc(a, b)` tal que:
 <center>`(x * a) + (y * b) = mdc(a, b)`</center>
 
 Mais informações em:
@@ -22,6 +22,12 @@ python euclides.py
 Para rodar os valores de teste, edite a _flag_ `testing` no começo do código
 
 Testado com Python 2.7.6, compatível com Python 2.x
+
+## TODO / Disclaimer
+A função euclid() está:
+- realizando muitas operações (não está especializada);
+- com uma lógica confusa, pois precisou adaptar o algoritmo original para exibir as expressões passo-a-passo de obtenção dos valores _x_ e _y_
+- misturando muito o `processamento` com o `output`
 
 ## Casos de Testes
 
